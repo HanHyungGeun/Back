@@ -5,7 +5,6 @@ using UnityEngine;
 public class DarkSight : MonoBehaviour
 {
     public GameObject Player;
-    public Transform point;
 
     void Start()
     {
@@ -15,10 +14,6 @@ public class DarkSight : MonoBehaviour
     {
         // x = 4 y = 15;
         transform.position = Player.transform.position;
-    }
-    private void OnDisable()
-    {
-        
     }
 
     void Update()

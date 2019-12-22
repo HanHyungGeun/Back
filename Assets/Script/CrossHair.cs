@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CrossHair : MonoBehaviour
 {
-
+    private enum State {Follow,NoFollow,Wait };
+    private State state;
     private GameObject Player;
 
     private bool isFire;
-    private bool isFollow;
     private float DetectRange = 2.5f;
     private int MovePoint = 0;
     private float FireDelay = .3f;
@@ -24,6 +24,7 @@ public class CrossHair : MonoBehaviour
 
     public GameObject BloodEffect;
     public bool isLock;
+    private bool isControl = false;
     public Vector3[] WayPoint;
 
 
@@ -34,16 +35,13 @@ public class CrossHair : MonoBehaviour
     }
 
     
-    public void FollowCtrl()
-    {
-        isFollow = !isFollow;
-    }
+
     void OnEnable()
     {
         UnLock.SetActive(false);
         Lock.SetActive(true);
         isFire = false;
-        isFollow = false;
+        state = State.Wait;
         isLock = true;
     }
     //화면에 금가는거
@@ -69,31 +67,31 @@ public class CrossHair : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, Player.transform.position) <= 4.5f)
         {
-            if(isFollow)
-            {
-                transform.position = Vector3.Lerp(transform.position, Player.transform.position, Time.deltaTime * 20f);
-                isFire = true;
-            }
-            StartCoroutine(co_FollowControl());
+            if (state != State.Wait || state == State.NoFollow) return;
+
+            StartCoroutine(co_Follow());
+            transform.position = Vector3.Lerp(transform.position, Player.transform.position, Time.deltaTime * 20f);
+            isFire = true;
         }
         else
             isFire = false;
     }
-    IEnumerator co_FollowControl()
+    IEnumerator co_Follow()
     {
-        isFollow = true;
         Lock.SetActive(false);
         UnLock.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2);
+        state = State.NoFollow;
         Lock.SetActive(true);
         UnLock.SetActive(false);
-        isFollow = false;
-    }
+        yield return new WaitForSeconds(1.5f);
+        state = State.Wait;
 
+    }
     void AttackPlayer()
     {
         if (!isFire) return;
-        if (Vector3.Distance(transform.position, Player.transform.position) <= 0.5f)
+        if (Vector3.Distance(transform.position, Player.transform.position) <= 0.8f)
         {
             if (!DataManager.Instance.isBlood)
             {
