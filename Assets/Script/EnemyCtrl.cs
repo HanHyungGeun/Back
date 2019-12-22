@@ -453,7 +453,7 @@ public class EnemyCtrl : MonoBehaviour {
     }
     private void AttackStart()
     {
-        SoundManager.Instance.Play_Gun();
+        SoundManager.Instance.Play_Gun(Constant.GunSoundType.Basic);
 
         //SetPlayerLook();
         GameObject Shot = Instantiate(ShotEffect) as GameObject;

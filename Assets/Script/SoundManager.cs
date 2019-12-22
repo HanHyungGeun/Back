@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class SoundManager : Singleton<SoundManager>
 {
-    public List<AudioClip> AudioList;
+    public List<AudioClip> RemainingSoundList;
+    public List<AudioClip> PlayerSoundList;
+    public List<AudioClip> GunSoundList;
+    public List<AudioClip> BgmList;
 
     public AudioSource MusicPlayer;
     public AudioSource FxPlayer;
@@ -21,45 +24,29 @@ public class SoundManager : Singleton<SoundManager>
         IsFx = Convert.ToBoolean(PlayerPrefs.GetInt("Fx", 1));
     }
  
-
-    public void Play_Title_Bgm()
+    public void Play_Bgm(Constant.BgmType type)
     {
         MusicPlayer.volume = IsMusic == true ? 1.0f : 0.0f;
-        MusicPlayer.clip = AudioList[0];
-        MusicPlayer.loop = true;
-        MusicPlayer.Play();
-
-    }
-    public void Play_InGame_Bgm()
-    {
-        MusicPlayer.volume = IsMusic == true ? 1.0f : 0.0f;
-        MusicPlayer.clip = AudioList[1];
+        MusicPlayer.clip = BgmList[(int)type];
         MusicPlayer.loop = true;
         MusicPlayer.Play();
     }
-
-
-    public void Play_Gun()
+    public void Play_Gun(Constant.GunSoundType type)
     {
         FxPlayer.volume = IsFx == true ? 1.0f : 0.0f;
-        FxPlayer.PlayOneShot(AudioList[2]);
+        FxPlayer.PlayOneShot(GunSoundList[(int)type]);
     }
-    public void Play_PlayerMove()
+
+    public void Play_PlayerSound(Constant.PlayerSoundType type)
     {
         FxPlayer.volume = IsFx == true ? 1.0f : 0.0f;
-        FxPlayer.PlayOneShot(AudioList[3]);
-    }
-    public void Play_PlayerDie()
-    {
-        FxPlayer.volume = IsFx == true ? 1.0f : 0.0f;
-        FxPlayer.PlayOneShot(AudioList[4]);
+        FxPlayer.PlayOneShot(PlayerSoundList[(int)type]);
     }
     public void Play_EnemyDie()
     {
         FxPlayer.volume = IsFx == true ? 1.0f : 0.0f;
-        FxPlayer.PlayOneShot(AudioList[5]);
+        FxPlayer.PlayOneShot(RemainingSoundList[0]);
     }
-
 
     public void SetMusic(bool IsOn)
     {

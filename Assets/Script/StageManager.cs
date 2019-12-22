@@ -53,7 +53,7 @@ public class StageManager : MonoBehaviour
         Clear.SetActive(false);
 
         FadeInOut.Instance.FadeOut(() => DataManager.Instance.IsLock = false);
-        SoundManager.Instance.Play_InGame_Bgm();
+        SoundManager.Instance.Play_Bgm(Constant.BgmType.InGame);
         DataManager.Instance.IsGameStart = true;
 
         _allBoxes = _allBoxes = FindObjectsOfType(typeof(BoxCollider2D)) as BoxCollider2D[];

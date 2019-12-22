@@ -10,6 +10,10 @@ public class EnemyTwoCtrl : MonoBehaviour
 
     private LineRenderer lr;
     private Vector3 firePos;
+    private void Start()
+    {
+        StageManager.Instance.SyncEnemy();
+    }
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
@@ -47,5 +51,6 @@ public class EnemyTwoCtrl : MonoBehaviour
             Vector2 randomVector = new Vector2((float)Random.Range(-3, 3), (float)Random.Range(-3, 3));
             go.GetComponent<Rigidbody2D>().AddForce(randomVector * 90);
         }
+        StageManager.Instance.EnemyDie();
     }
 }

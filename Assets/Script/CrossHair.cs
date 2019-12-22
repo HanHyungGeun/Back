@@ -103,6 +103,7 @@ public class CrossHair : MonoBehaviour
                 Blood.transform.localScale = new Vector3(8f, 8f, 1);
             }
             StageManager.Instance.PlayerHit(1, 0.025f, 10, 50);
+            SoundManager.Instance.Play_Gun(Constant.GunSoundType.EnemyRifle);
             //사운드
         }
     }

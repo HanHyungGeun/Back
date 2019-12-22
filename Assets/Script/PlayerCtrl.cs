@@ -157,7 +157,7 @@ public class PlayerCtrl : MonoBehaviour
                 mMyTrans.rotation = Quaternion.Euler(0, 0, 90 * -mMyTrans.localScale.x);
                 break;
         }
-        SoundManager.Instance.Play_PlayerMove();
+        SoundManager.Instance.Play_PlayerSound(Constant.PlayerSoundType.Move);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -391,7 +391,7 @@ public class PlayerCtrl : MonoBehaviour
         this.GetComponent<BoxCollider2D>().enabled = false;
         this.GetComponentInChildren<SpriteRenderer>().DOFade(0.0f, 0.25f);
         DieEffect.SetActive(true);
-        SoundManager.Instance.Play_PlayerDie();
+        SoundManager.Instance.Play_PlayerSound(Constant.PlayerSoundType.Die);
         mIsLock = true;
         this.gameObject.layer = 0;
     }

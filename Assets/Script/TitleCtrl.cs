@@ -20,7 +20,7 @@ public class TitleCtrl : MonoBehaviour
 
         DataManager.Instance.TitleInit();
         FadeInOut.Instance.FadeOut(() => DataManager.Instance.IsLock = false);
-        SoundManager.Instance.Play_Title_Bgm();
+        SoundManager.Instance.Play_Bgm(Constant.BgmType.Title);
         SetPage();
         SetShowButton();
     }
@@ -32,7 +32,7 @@ public class TitleCtrl : MonoBehaviour
             GameObject obj = Instantiate(MouseEffect) as GameObject;
             obj.transform.SetParent(this.transform);
             obj.transform.position = Input.mousePosition;
-            SoundManager.Instance.Play_Gun();
+            SoundManager.Instance.Play_Gun(Constant.GunSoundType.Basic);
         }
     }
 
