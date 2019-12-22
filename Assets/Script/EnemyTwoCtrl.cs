@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class EnemyTwoCtrl : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -52,5 +52,6 @@ public class EnemyTwoCtrl : MonoBehaviour
             go.GetComponent<Rigidbody2D>().AddForce(randomVector * 90);
         }
         StageManager.Instance.EnemyDie();
+        Camera.main.DOShakePosition(0.25f, 3, 30);
     }
 }

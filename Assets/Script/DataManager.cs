@@ -329,6 +329,7 @@ public partial class DataManager //: Singleton<DataManager>
     {
         int TempSecond = 0;
         int TempMinute = 0;
+        int TempFucking = 0;
         int HeartPlus = 0;
         if(Second > timeCalSecond) //현재 초 (0)- 시간차
         {
@@ -361,11 +362,12 @@ public partial class DataManager //: Singleton<DataManager>
         else//시간차이가 더클때
         {
             TempMinute = timeCalMinute - Minute;
-            HeartPlus = TempMinute / 10;
             Minute = TempMinute % 10;
         }
+        TempFucking = timeCalMinute + Minute;
+        HeartPlus = TempFucking / 10;
         //맥스 5까지만 쳐오르게
-        for(int i=0;i<HeartPlus;i++)
+        for (int i=0;i<HeartPlus;i++)
         {
             if (HeartAmount < 5)
                 HeartAmount++;
