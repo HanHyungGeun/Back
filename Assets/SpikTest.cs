@@ -60,8 +60,6 @@ public class SpikTest : MonoBehaviour
             StartCoroutine(Spik());
         }
     }
-
-
     private IEnumerator Spik()
     {
         float CurrentTime = 0.0f;
@@ -104,8 +102,6 @@ public class SpikTest : MonoBehaviour
         SpikSliceOffset = SpikRender.size.y / SpikHeight;
         SpikRender.transform.localPosition =
             new Vector3(SpikRender.transform.localPosition.x, -(WallHeightRadius + (SpikHeightRadius * SpikSliceOffset)) - SpikOriginalPosY, 0);
-
-
     }
 
 }
