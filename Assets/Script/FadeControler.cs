@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FadeControler : MonoBehaviour
+public class FadeControler : Singleton<FadeControler>
 {
     public delegate void FadeHandler();
     public event FadeHandler FadeEvent;
@@ -12,12 +12,13 @@ public class FadeControler : MonoBehaviour
     public bool isFade;
     Image FadeImage;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         isFade = false;
-        FadeImage = GetComponent<Image>();
-        StartCoroutine(TimerFadeIn(3.5f));
-        StartCoroutine(TimerFadeOut(5.5f));
+        //FadeImage = GetComponent<Image>();
+        //StartCoroutine(TimerFadeIn(3.5f));
+        //StartCoroutine(TimerFadeOut(5.5f));
     }
     public IEnumerator TimerFadeIn(float time)
     {
@@ -79,6 +80,7 @@ public class FadeControler : MonoBehaviour
         }
         isFade = false;
     }
+
     IEnumerator Co_FadeIn(Image img, float time,FadeHandler handle)
     {
         isFade = true;
@@ -110,6 +112,7 @@ public class FadeControler : MonoBehaviour
         }
         isFade = false;        
     }
+
     IEnumerator Co_FadeOut(Image img, float time,FadeHandler handle)
     {
         isFade = true;

@@ -294,11 +294,19 @@ public partial class DataManager //: Singleton<DataManager>
     {
         if(pause)
         {
-            Debug.Log("DD");
+            DateTime QuitDateTime = DateTime.Now;
+
+            CompareYear = QuitDateTime.Year;
+            CompareMonth = QuitDateTime.Month;
+            CompareDay = QuitDateTime.Day;
+            CompareHour = QuitDateTime.Hour;
+            CompareMinute = QuitDateTime.Minute;
+            CompareSecond = QuitDateTime.Second;
         }
         else
         {
-            Debug.Log("씨팔");
+            TimeCompareCheck();
+            HeatCalc();
         }
     }
     void TimeCompareCheck()

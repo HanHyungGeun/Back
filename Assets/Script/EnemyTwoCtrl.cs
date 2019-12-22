@@ -6,12 +6,21 @@ public class EnemyTwoCtrl : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject CrossHair;
-    void Start()
+    public GameObject Remnants;
+
+    private LineRenderer lr;
+    private Vector3 firePos;
+    void Awake()
     {
-      
+        lr = GetComponent<LineRenderer>();
+        lr.startWidth = .19f;
+        lr.endWidth = .19f;
+        lr.startColor = Color.red;
+        lr.endColor = Color.black;
     }
     private void OnEnable()
     {
+        firePos = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
         CrossHair.transform.position = transform.position;
         StageManager.Instance.GameStartEvent += (() => 
         {
@@ -23,5 +32,20 @@ public class EnemyTwoCtrl : MonoBehaviour
     private void OnDisable()
     {
         StageManager.Instance.GameStartEvent -= (() => { CrossHair.SetActive(true); });
+    }
+    private void Update()
+    {
+        lr.SetPosition(0, firePos);
+        lr.SetPosition(1,CrossHair.transform.position);
+    }
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        gameObject.SetActive(false);
+        for(int i=0;i<6;i++)
+        {
+            var go = Instantiate(Remnants, transform.position, transform.rotation);
+            Vector2 randomVector = new Vector2((float)Random.Range(-3, 3), (float)Random.Range(-3, 3));
+            go.GetComponent<Rigidbody2D>().AddForce(randomVector * 90);
+        }
     }
 }

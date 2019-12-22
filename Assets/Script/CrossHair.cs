@@ -18,14 +18,13 @@ public class CrossHair : MonoBehaviour
     [SerializeField] private GameObject Aim;
     [SerializeField] private GameObject Cicle;
     [SerializeField] private GameObject Shadow;
+    public GameObject Lock;
+    public GameObject UnLock;
 
 
     public GameObject BloodEffect;
     public bool isLock;
     public Vector3[] WayPoint;
-
-    public GameObject Enemy2Face;
-
 
 
     void Start()
@@ -41,6 +40,8 @@ public class CrossHair : MonoBehaviour
     }
     void OnEnable()
     {
+        UnLock.SetActive(false);
+        Lock.SetActive(true);
         isFire = false;
         isFollow = false;
         isLock = true;
@@ -81,15 +82,19 @@ public class CrossHair : MonoBehaviour
     IEnumerator co_FollowControl()
     {
         isFollow = true;
+        Lock.SetActive(false);
+        UnLock.SetActive(true);
         yield return new WaitForSeconds(2f);
+        Lock.SetActive(true);
+        UnLock.SetActive(false);
         isFollow = false;
     }
 
     void AttackPlayer()
     {
         if (!isFire) return;
-       // if (isFire)
-       // {
+        if (Vector3.Distance(transform.position, Player.transform.position) <= 0.5f)
+        {
             if (!DataManager.Instance.isBlood)
             {
                 GameObject Blood = Instantiate(BloodEffect) as GameObject;
@@ -98,15 +103,10 @@ public class CrossHair : MonoBehaviour
                 Blood.transform.localScale = new Vector3(8f, 8f, 1);
             }
             StageManager.Instance.PlayerHit(1, 0.025f, 10, 50);
-            StartCoroutine(FaceColor());
-      //  }
+            //사운드
+        }
     }
-    IEnumerator FaceColor()
-    {
-        Enemy2Face.GetComponent<SpriteRenderer>().color = Color.yellow;
-        yield return new WaitForSeconds(.2f);
-        Enemy2Face.GetComponent<SpriteRenderer>().color = Color.white; ;
-    }
+
     void OnDrawGizmosSelected()
     {
         for (int i = 0; i < WayPoint.Length; i++)
