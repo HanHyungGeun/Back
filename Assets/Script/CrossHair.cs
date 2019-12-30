@@ -30,7 +30,7 @@ public class CrossHair : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("Player");
-        InvokeRepeating("AttackPlayer", FireDelay, FireDelay);///kjkjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkjjjj
+        InvokeRepeating("AttackPlayer", FireDelay, FireDelay);
     }
 
     

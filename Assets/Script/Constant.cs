@@ -12,6 +12,6 @@ public class Constant : MonoBehaviour {
 
     //사운드
     public enum PlayerSoundType {Move,Die };
-    public enum GunSoundType { Basic , EnemyRifle };
+    public enum GunSoundType { Basic , EnemyRifle ,PaintBallShoot,PaintBallHit};
     public enum BgmType { Title,InGame };
 }
