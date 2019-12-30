@@ -14,10 +14,8 @@ public class CrossHair : MonoBehaviour
     private float FireDelay = .3f;
 
 
-    [Header("Cross Hair Parts")]
-    [SerializeField] private GameObject Aim;
-    [SerializeField] private GameObject Cicle;
-    [SerializeField] private GameObject Shadow;
+    [SerializeField] private SpriteRenderer Aim;
+
     public GameObject Lock;
     public GameObject UnLock;
 
@@ -26,6 +24,7 @@ public class CrossHair : MonoBehaviour
     public bool isLock;
     private bool isControl = false;
     public Vector3[] WayPoint;
+
 
 
     void Start()
@@ -80,10 +79,12 @@ public class CrossHair : MonoBehaviour
     {
         Lock.SetActive(false);
         UnLock.SetActive(true);
+        Aim.color = Color.red;
         yield return new WaitForSeconds(2);
         state = State.NoFollow;
         Lock.SetActive(true);
         UnLock.SetActive(false);
+        Aim.color = Color.black;
         yield return new WaitForSeconds(1.5f);
         state = State.Wait;
 
@@ -91,7 +92,7 @@ public class CrossHair : MonoBehaviour
     void AttackPlayer()
     {
         if (!isFire) return;
-        if (Vector3.Distance(transform.position, Player.transform.position) <= 0.8f)
+        if (Vector3.Distance(transform.position, Player.transform.position) <= 1f)
         {
             if (!DataManager.Instance.isBlood)
             {
@@ -102,7 +103,6 @@ public class CrossHair : MonoBehaviour
             }
             StageManager.Instance.PlayerHit(1, 0.025f, 10, 50);
             SoundManager.Instance.Play_Gun(Constant.GunSoundType.EnemyRifle);
-            //사운드
         }
     }
 

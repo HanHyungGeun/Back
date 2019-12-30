@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DarkSight : MonoBehaviour
 {
     public GameObject Player;
+    private SpriteRenderer spr;
 
-    void Start()
+    void Awake()
     {
-        
+        spr = GetComponent<SpriteRenderer>();
     }
     private void OnEnable()
-    {
-        // x = 4 y = 15;
+    {      
         transform.position = Player.transform.position;
+        spr.color = new Color(0, 0, 0, 0);
+        spr.DOFade(1, 1.5f);
     }
 
     void Update()
