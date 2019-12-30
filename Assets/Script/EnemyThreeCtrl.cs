@@ -39,6 +39,8 @@ public class EnemyThreeCtrl : MonoBehaviour
     IEnumerator co_Attack()
     {
         TargetX = Instantiate(XMark, XPosition[count], transform.rotation);
+        TargetX.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        TargetX.GetComponent<SpriteRenderer>().DOFade(1, 1);
         yield return new WaitForSeconds(2f);
         StartCoroutine(co_ShootBall());
         yield return new WaitForSeconds(6f);
