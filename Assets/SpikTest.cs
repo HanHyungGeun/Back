@@ -12,6 +12,10 @@ public class SpikTest : MonoBehaviour
     public Sprite SpikSprite;
     public SpriteRenderer SpikRender;
 
+    public float SpikTime = 0.3f;
+    public float SpikPower = 0.3f;
+
+
     private float WallWidth;
     private float WallHeight;
 
@@ -26,36 +30,46 @@ public class SpikTest : MonoBehaviour
 
     private float SpikSliceOffset;
 
-
     private float SpikOriginalPosY;
     private float SpikOriginalSizeY;
 
+    private BoxCollider2D SpikCollider;
 
     // Start is called before the first frame update
     void Start()
     {
-        WallWidth  = (float)WallSprite.texture.width / 100;
+        WallWidth = (float)WallSprite.texture.width / 100;
         WallHeight = (float)WallSprite.texture.height / 100;
 
-        WallWidthRadius  = WallWidth / 2;
+        WallWidthRadius = WallWidth / 2;
         WallHeightRadius = WallHeight / 2;
 
-        SpikWidth  = (float) SpikSprite.texture.width / 100;
+        SpikWidth = (float)SpikSprite.texture.width / 100;
         SpikHeight = (float)SpikSprite.texture.height / 100;
 
         SpikWidthRadius = SpikWidth / 2;
         SpikHeightRadius = SpikHeight / 2;
 
-        SpikSliceOffset =  SpikRender.size.y  / SpikHeight;
+        SpikSliceOffset = SpikRender.size.y / SpikHeight;
 
         SpikOriginalPosY = SpikRender.transform.localPosition.y;
         SpikOriginalSizeY = SpikRender.size.y;
+
+        SpikCollider = SpikRender.GetComponent<BoxCollider2D>();
+        SpikCollider.size = new Vector2(SpikRender.size.x, SpikRender.size.y);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag("Player"))
+        {
+            StartCoroutine(Spik());
+        }
+    }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(Spik());
         }
@@ -63,21 +77,21 @@ public class SpikTest : MonoBehaviour
     private IEnumerator Spik()
     {
         float CurrentTime = 0.0f;
-        float EndTime = 0.5f;
+        float EndTime = SpikTime * 0.5f;
 
-        while(true)
+        while (true)
         {
             CurrentTime += Time.deltaTime;
-            if(CurrentTime >= EndTime)
+            if (CurrentTime >= EndTime)
             {
                 CurrentTime = 0.0f;
                 break;
             }
-            SpikRender.size = new Vector2(SpikRender.size.x, SpikRender.size.y + Time.deltaTime );
+            SpikRender.size = new Vector2(SpikRender.size.x, SpikRender.size.y + SpikPower);
             SpikSliceOffset = SpikRender.size.y / SpikHeight;
             SpikRender.transform.localPosition =
                 new Vector3(SpikRender.transform.localPosition.x, -(WallHeightRadius + (SpikHeightRadius * SpikSliceOffset)) - SpikOriginalPosY, 0);
-
+            SpikCollider.size = new Vector2(SpikRender.size.x, SpikRender.size.y);
             yield return null;
         }
 
@@ -89,11 +103,11 @@ public class SpikTest : MonoBehaviour
                 CurrentTime = 0.0f;
                 break;
             }
-            SpikRender.size = new Vector2(SpikRender.size.x, SpikRender.size.y - Time.deltaTime );
+            SpikRender.size = new Vector2(SpikRender.size.x, SpikRender.size.y - SpikPower);
             SpikSliceOffset = SpikRender.size.y / SpikHeight;
             SpikRender.transform.localPosition =
                 new Vector3(SpikRender.transform.localPosition.x, -(WallHeightRadius + (SpikHeightRadius * SpikSliceOffset)) - SpikOriginalPosY, 0);
-
+            SpikCollider.size = new Vector2(SpikRender.size.x, SpikRender.size.y);
             yield return null;
         }
 
@@ -101,7 +115,8 @@ public class SpikTest : MonoBehaviour
         SpikRender.size = new Vector2(SpikRender.size.x, SpikOriginalSizeY);
         SpikSliceOffset = SpikRender.size.y / SpikHeight;
         SpikRender.transform.localPosition =
-            new Vector3(SpikRender.transform.localPosition.x, -(WallHeightRadius + (SpikHeightRadius * SpikSliceOffset)) - SpikOriginalPosY, 0);
+            new Vector3(SpikRender.transform.localPosition.x, SpikOriginalPosY, 0);
+        SpikCollider.size = new Vector2(SpikRender.size.x, SpikRender.size.y);
     }
 
 }
