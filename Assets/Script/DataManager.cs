@@ -99,7 +99,6 @@ public partial class DataManager //: Singleton<DataManager>
     {
         get
         {
-            //return m_heartamount;
             return PlayerPrefs.GetInt("HeartAmount", 5);
         }
         set
@@ -109,10 +108,7 @@ public partial class DataManager //: Singleton<DataManager>
             {
                 HeartAmount = 5;
             }
-            //m_heartamount = 5;
-            //m_heartamount = value;
             if (hc != null) hc.ShowHeartImage(HeartAmount);
-            //PlayerPrefs.SetInt("HeartAmount", m_heartamount);
         }
     }
 
@@ -121,15 +117,11 @@ public partial class DataManager //: Singleton<DataManager>
     {
         get
         {
-            //return m_minute;
             return PlayerPrefs.GetInt("Minute", 9);
         }
         set
         {
             PlayerPrefs.SetInt("Minute", value);
-            //if (m_minute > 10) m_minute = 10;
-            //m_minute = value;
-            //PlayerPrefs.SetInt("Minute", m_minute);
         }
     }
 
@@ -138,27 +130,10 @@ public partial class DataManager //: Singleton<DataManager>
     {
         get
         {
-            //return m_second;
             return PlayerPrefs.GetInt("Second", 59);
         }
         set
         {
-            //if (m_second == 0 && Minute == 0)
-            //{
-            //    m_second = 0;
-            //    Minute = 10;
-            //    if (HeartAmount > 5)
-            //        HeartAmount++;
-            //}
-            //if (m_second > 0)
-            //{
-            //    m_second = value;
-            //}
-            //else
-            //{
-            //    m_second = 59; // 씨발
-            //    Minute -= 1;
-            //}
             PlayerPrefs.SetInt("Second", value);
         }
     }
@@ -259,7 +234,8 @@ public partial class DataManager //: Singleton<DataManager>
     private int timeCalHour;
     private int timeCalMinute;
     private int timeCalSecond;
-
+    private DateTime QuitDateTime;
+    private DateTime StartDateTime;
     [HideInInspector] public bool isBlood;
     private void Init()
     {
@@ -272,14 +248,14 @@ public partial class DataManager //: Singleton<DataManager>
     }
     void OnApplicationQuit()
     {
-        DateTime QuitDateTime = DateTime.Now;
+        QuitDateTime = DateTime.Now;
 
-        CompareYear = QuitDateTime.Year;
-        CompareMonth = QuitDateTime.Month;
-        CompareDay = QuitDateTime.Day;
-        CompareHour = QuitDateTime.Hour;
-        CompareMinute = QuitDateTime.Minute;
-        CompareSecond = QuitDateTime.Second;
+        //CompareYear = QuitDateTime.Year;
+        //CompareMonth = QuitDateTime.Month;
+        //CompareDay = QuitDateTime.Day;
+        //CompareHour = QuitDateTime.Hour;
+        //CompareMinute = QuitDateTime.Minute;
+        //CompareSecond = QuitDateTime.Second;
 
         //PlayerPrefs.Save();
 #if UNITY_EDITOR
@@ -294,14 +270,14 @@ public partial class DataManager //: Singleton<DataManager>
     {
         if(pause)
         {
-            DateTime QuitDateTime = DateTime.Now;
+            QuitDateTime = DateTime.Now;
 
-            CompareYear = QuitDateTime.Year;
-            CompareMonth = QuitDateTime.Month;
-            CompareDay = QuitDateTime.Day;
-            CompareHour = QuitDateTime.Hour;
-            CompareMinute = QuitDateTime.Minute;
-            CompareSecond = QuitDateTime.Second;
+            //CompareYear = QuitDateTime.Year;
+            //CompareMonth = QuitDateTime.Month;
+            //CompareDay = QuitDateTime.Day;
+            //CompareHour = QuitDateTime.Hour;
+            //CompareMinute = QuitDateTime.Minute;
+            //CompareSecond = QuitDateTime.Second;
         }
         else
         {
@@ -311,13 +287,10 @@ public partial class DataManager //: Singleton<DataManager>
     }
     void TimeCompareCheck()
     {
-        DateTime StartDateTime = DateTime.Now;
-        DateTime CompareDateTime = new DateTime(CompareYear, CompareMonth, CompareDay, CompareHour, CompareMinute, CompareSecond);
-
-        //Test
-        //DateTime StartDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, 47, 04);
-        //DateTime CompareDateTime = new DateTime(DateTime.Now.Year, 11, 26, DateTime.Now.Hour, 10, 38);
-        System.TimeSpan timeCal = StartDateTime - CompareDateTime;
+        StartDateTime = DateTime.Now;
+        System.TimeSpan timeCal = StartDateTime - QuitDateTime;
+        //DateTime CompareDateTime = new DateTime(CompareYear, CompareMonth, CompareDay, CompareHour, CompareMinute, CompareSecond);
+        //System.TimeSpan timeCal = StartDateTime - CompareDateTime;
 
         timeCalDay = timeCal.Days;
         timeCalHour = timeCal.Hours;
@@ -329,7 +302,6 @@ public partial class DataManager //: Singleton<DataManager>
     {
         int TempSecond = 0;
         int TempMinute = 0;
-        int TempFucking = 0;
         int HeartPlus = 0;
         if(Second > timeCalSecond) //현재 초 (0)- 시간차
         {
@@ -348,7 +320,7 @@ public partial class DataManager //: Singleton<DataManager>
             {
                 //minute 값을 바꿔야될때
                 Minute = 9;
-                Second += 60; //싀벌 여기
+                Second += 60;
                 Second -= timeCalSecond;
                 HeartAmount++;
             }
@@ -361,11 +333,11 @@ public partial class DataManager //: Singleton<DataManager>
         }
         else//시간차이가 더클때
         {
-            TempMinute = timeCalMinute - Minute;
+            TempMinute = timeCalMinute;
             Minute = TempMinute % 10;
         }
-        TempFucking = timeCalMinute + Minute;
-        HeartPlus = TempFucking / 10;
+        if(timeCalMinute >10)
+        HeartPlus = timeCalMinute / 10;
         //맥스 5까지만 쳐오르게
         for (int i=0;i<HeartPlus;i++)
         {
